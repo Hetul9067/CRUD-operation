@@ -43,11 +43,11 @@ td {
 td {
   padding: 0rem 1.5rem;
 }
-.page-1 {
-  /* display: none; */
+.hidden {
+  display: none;
 }
 .page-2-main {
-  display: none;
+  /* display: none; */
 
   position: absolute;
   left: 20%;
