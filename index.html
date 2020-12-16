@@ -4,10 +4,77 @@
         <title>Personal Details</title>
         <meta charset="UTF-8">
         <meta name = "viewport" content="width=device-width, initial scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         <script async src="details.js"></script>
     </head>
     <body>
-        
+        <div class="page-1">
+            <header>
+                <button type="button" class="btn btn-outline-secondary btn-create">Create</button>
+            </header>
+            <main class="main-container">
+                <table class="tb-out" >
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Fullname</th>
+                            <th>Age(year)</th>
+                            <th>Gender</th>
+                            <th>Birthdate</th>
+                            <th>Save/Cancel</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hetul</td>
+                            <td>Chaudhary</td>
+                            <td>Hetul Chaudhary</td>
+                            <td>22</td>
+                            <td>Male</td>
+                            <td>08/12/1998</td>
+                            <td>save</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>    
+                </table>  
+            </main>
+            </header>    
+        </div>
+        <div class="page-2-main">
+            <div class="form-outer">
+               
+                <form class="form-details">
+                    <table>
+                        <tr>
+                            <th><label for="fname">First Name :</label></th>
+                            <td><input type="text"  id="fname" name="fname" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="sname">Surname :</label></th>
+                            <td><input type="text" id="sname" name="sname" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="gen">Gender :</label></th>
+                            <td><input type="text" id="gen" name="gen" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="bday">BirthDate :</label></th>
+                            <td><input type="date" id="bday" name="bday" min="1950-01-01" max="2020-01-01" required></td>
+                        </tr>
+                    </table>    
+                </form>
+            
+            </div>
+            <div class="btn-sv-cl ">
+                <button type="button" class="btn-save">SAVE</button>
+                <button type="button" class="btn-cancel">CANCEL</button>
+            </div>
+            <div class="btn-up">
+                <button type="button" class="btn-update">UPDATE</button>
+            </div>
+        </div>
     </body>
 </html>
