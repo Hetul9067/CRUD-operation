@@ -123,24 +123,9 @@ formDetail.addEventListener('submit',function(e) {
 
         return;    
             
-            // const dataArr = [...new FormData(formDetail)];
-            //     const data = Object.fromEntries(dataArr);
-            //     const dataAll = {
-            //         firstName : data.fname,
-            //         surname : data.sname,
-            //         gender : data.gen,
-            //         birthDate : data.bday,
-            //     }
-            //     h1 = new Detail(dataAll);
-            //     dataAll.fullName = h1.name();
-            //     dataAll.age = h1.ageCalc();
-            //     dataAll.saveCancel = ans;
-            
 
     }
-    // update.addEventListener('click',function() {
-    //     console.log('hii');
-    // })
+
     detailObject.push(dataAll);
     storeData(detailObject);
     renderTable();
@@ -151,32 +136,6 @@ formDetail.addEventListener('submit',function(e) {
 const updateDetail = function(e) {
     updateFlag = true;
 
-    // e.preventDefault();
-    // const data = getLocalStorage();
-
-    // const dataArr = [...new FormData(outerSubmit)];
-    // const data = Object.fromEntries(dataArr);
-    // const dataAll = {
-    //     firstName : data.fname,
-    //     surname : data.sname,
-    //     gender : data.gen,
-    //     birthDate : data.bday,
-    // }
-    // h1 = new Detail(dataAll);
-    // dataAll.fullName = h1.name();
-    // dataAll.age = h1.ageCalc();
-    // dataAll.saveCancel = ans;
-    // console.log(dataAll);
-    // console.log('hii');
-    // detailObject.forEach(function(data) {
-    //     if(dataAll.fullName === data.fullName) {
-
-    //     }
-    // })
-
-
-    // firstPage.classList.toggle('hidden');
-    // secondPage.classList.toggle('hidden');
 }
 
 
@@ -255,22 +214,3 @@ const init = function() {
 }
 init();
 
-
-// localStorage.removeItem('PersonalDetail')
-        
-        // console.log('//////////////////////////');
-        // const x = [1,2,3];
-        // const y = [1,2,3];
-        // console.log(JSON.stringify(x)===JSON.stringify(y));
-        // if (JSON.stringify(Object.values(data)) === JSON.stringify(Object.values(dataAll))) {
-            
-            // if(e.target.getAttribute('class') === 'btn-cancel') {
-                //     console.log('hii');
-                //     const ex = getLocalStorage();
-                //     ex.forEach(function(data,i,arr) {
-                    //         if(dataAll === data) {
-                        //             console.log('you got it');
-                        //         }
-                        //     })
-                        // }
-                        
