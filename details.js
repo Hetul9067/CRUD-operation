@@ -61,7 +61,7 @@ class Detail  {
     }
 }
 
-
+let updateFlag = false;
 // fetch form data
 let h1;
 formDetail.addEventListener('submit',function(e) {
@@ -96,6 +96,48 @@ formDetail.addEventListener('submit',function(e) {
         return;
         
     }
+    console.log(updateFlag);
+    let availableUpdate = true;
+    if(updateFlag) {
+        console.log("we got it" );
+        console.log(dataAll.firstName);
+        detailObject.forEach(function(data) {
+            if(data.firstName === dataAll.firstName) {
+                data.surname = dataAll.surname;
+                data.gender = dataAll.gender;
+                data.birthDate = dataAll.birthDate;
+                data.fullName = dataAll.fullName;
+                data.age = dataAll.age;
+                data.saveCancel = data.saveCancel;
+                availableUpdate = false;
+            }
+        })
+        if(availableUpdate) {
+            alert('data not found');
+            
+        }
+        availableUpdate = false;
+        updateFlag = false;
+        storeData(detailObject);
+        renderTable();
+
+        return;    
+            
+            // const dataArr = [...new FormData(formDetail)];
+            //     const data = Object.fromEntries(dataArr);
+            //     const dataAll = {
+            //         firstName : data.fname,
+            //         surname : data.sname,
+            //         gender : data.gen,
+            //         birthDate : data.bday,
+            //     }
+            //     h1 = new Detail(dataAll);
+            //     dataAll.fullName = h1.name();
+            //     dataAll.age = h1.ageCalc();
+            //     dataAll.saveCancel = ans;
+            
+
+    }
     // update.addEventListener('click',function() {
     //     console.log('hii');
     // })
@@ -107,7 +149,11 @@ formDetail.addEventListener('submit',function(e) {
 
 // update button
 const updateDetail = function(e) {
-    e.preventDefault();
+    updateFlag = true;
+
+    // e.preventDefault();
+    // const data = getLocalStorage();
+
     // const dataArr = [...new FormData(outerSubmit)];
     // const data = Object.fromEntries(dataArr);
     // const dataAll = {
@@ -134,7 +180,7 @@ const updateDetail = function(e) {
 }
 
 
-update.addEventListener('submit',updateDetail)
+update.addEventListener('click',updateDetail)
 
 console.log(localStorage.length);
 // render table 
@@ -228,4 +274,3 @@ init();
                         //     })
                         // }
                         
-        // }
