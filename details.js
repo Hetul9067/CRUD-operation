@@ -93,6 +93,8 @@ formDetail.addEventListener('submit',function(e) {
         storeData(detailObject);
 
         renderTable();
+        formDetail.reset();
+
         return;
         
     }
@@ -120,6 +122,7 @@ formDetail.addEventListener('submit',function(e) {
         updateFlag = false;
         storeData(detailObject);
         renderTable();
+        formDetail.reset();
 
         return;    
             
@@ -129,6 +132,7 @@ formDetail.addEventListener('submit',function(e) {
     detailObject.push(dataAll);
     storeData(detailObject);
     renderTable();
+    formDetail.reset();
     
 })
 
