@@ -1,0 +1,88 @@
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: Consolas, monaco, monospace;
+  font-weight: 400;
+  background-color: rgb(206, 211, 208);
+}
+
+header {
+  height: 10vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+button {
+  font-size: 2rem;
+  padding: 0 2rem;
+}
+.btn-create {
+  font-size: 2rem;
+  /* transition: transform 1s ease-in 0s; */
+  margin-left: 20%;
+}
+button:hover {
+  box-shadow: 3px 5px rgb(0, 21, 10);
+  transform: translateY(-2px);
+  transition: all 0.5s ease-in 0s;
+}
+
+.main-container {
+  position: absolute;
+  top: 12%;
+  margin-left: 20%;
+  font-size: 1.5rem;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+  padding: 1rem;
+}
+td {
+  padding: 0rem 1.5rem;
+}
+.hidden {
+  display: none;
+}
+.page-2-main {
+  /* display: none; */
+
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 15%;
+  bottom: 15%;
+  background-color: rgb(180, 194, 88, 0.5);
+}
+.form-outer {
+  margin-left: 20%;
+  display: flex;
+  width: 60%;
+  height: 60vh;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+form table {
+  height: 40vh;
+}
+
+form table th,
+td {
+  padding: 0 3rem;
+  color: black;
+  font-size: 1.5rem;
+}
+.btn-sv-cl {
+  display: flex;
+  justify-content: center;
+}
+.btn-up {
+  display: flex;
+  justify-content: center;
+}
+button {
+  background-color: darkgreen;
+}
