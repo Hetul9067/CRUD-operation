@@ -168,13 +168,13 @@ const renderTable = function () {
         const markup = `
         
         <tr>
-        <td>${data.firstName}</td>
-        <td>${data.surname}</td>
+        <td class="fname" >${data.firstName}</td>
+        <td class='sname'>${data.surname}</td>
         <td>${data.fullName}</td>
         <td>${data.age}</td>
-        <td>${data.gender}</td>
-        <td>${data.birthDate}</td>
-        <td>${data.saveCancel}</td>
+        <td class="gender">${data.gender}</td>
+        <td class="birthdate">${data.birthDate}</td>
+        
         ${(i===0)?addMarkup:''}
         </tr>
         
@@ -207,6 +207,37 @@ document.addEventListener('click',function(e) {
         renderTable();
         
     }
+})
+
+document.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('hii');
+    console.log(e.target.querySelector('#editFname').value);
+    const text = e.target.querySelector('#editFname').value;
+    const data = getLocalStorage();
+    console.log(data);
+    data[0].firstName = text;
+    data[0].fullName = 
+    console.log(data);
+})
+
+
+document.addEventListener('click', function(e) {
+    // console.log(e.target.textContent);
+    console.log(e.target);
+    if(e.target && e.target.getAttribute('class') === 'fname') {
+        const markup = 
+        `
+        <form class='formname'>
+            <input type= "text" id="editFname" name="editFname">
+        </form>`;
+        // e.target.innerHTML = '';
+        e.target.insertAdjacentHTML('beforeend',markup);
+    }
+    else if (e.target && e.target.getAttribute('class') === 'sname') {
+
+    }
+    console.log(e.target);
 })
 
 
