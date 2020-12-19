@@ -37,9 +37,9 @@ create.addEventListener('click',openSecondPage );
 class Detail  {
     constructor (data) {
         // console.log(firstName);
-        this.firstName = data.firstName[0].toUpperCase() + data.firstName.slice(1);
-        this.surname = data.surname[0].toUpperCase() + data.surname.slice(1);
-        this.gender = data.gender;
+        this.firstName = data.firstName[0].toUpperCase() + data.firstName.slice(1).toLowerCase();
+        this.surname = data.surname[0].toUpperCase() + data.surname.slice(1).toLowerCase();
+        this.gender = data.gender[0].toUpperCase() + data.gender.slice(1).toLowerCase();
         this.birthDate = data.birthDate;
         
     }
@@ -73,7 +73,7 @@ formDetail.addEventListener('submit',function(e) {
     h1 = new Detail(dataAll);
     dataAll.fullName = h1.name();
     dataAll.age = h1.ageCalc();
-    detailObject.push(dataAll);
+    detailObject.push(h1);
     storeData(detailObject);
     renderTable();
     formDetail.reset();
@@ -99,12 +99,12 @@ const renderTable = function () {
     detailObject.forEach(function(data, i,arr) {
         const markup = `
         <tr>
-        <td class="fname" data-no="${i}" >${data.firstName}</td>
-        <td class='sname' data-no="${i}">${data.surname}</td>
+        <td class="fname" id='editHover' data-no="${i}" >${data.firstName}</td>
+        <td class='sname' id='editHover' data-no="${i}">${data.surname}</td>
         <td>${data.fullName}</td>
         <td >${data.age} </td>
-        <td class="gender" data-no="${i}">${data.gender}</td>
-        <td class="birthdate" data-no="${i}">${data.birthDate}</td>
+        <td class="gender" id='editHover' data-no="${i}">${data.gender}</td>
+        <td class="birthdate" id='editHover'  data-no="${i}">${data.birthDate}</td>
         
         ${(i===0)?addMarkup:''}
         </tr>
@@ -153,7 +153,7 @@ document.addEventListener('click',function(e) {
 })
 
 
-// update data 
+// update data submit 
 let counter ;
 let addDetail = false;
 document.addEventListener('submit',async function(e) {
@@ -165,18 +165,22 @@ document.addEventListener('submit',async function(e) {
         data.forEach(function(dataObject,i,arr) {
             if(i === +counter){
                 if(idName === 'editfname' ) {
+
                     dataObject.firstName = text;
                     const xdata = new Detail(dataObject);
+                    dataObject.firstName = xdata.firstName;
                     dataObject.fullName = xdata.name();
                     alert('FirstName & FullName change successfully')               
                 } else if(idName === 'editsname' ) {
                     dataObject.surname = text;
                     const xdata = new Detail(dataObject);
+                    dataObject.surname = xdata.surname;
+
                     dataObject.fullName = xdata.name();
                     alert('Surname & FullName change successfully')               
 
                 } else if (idName === 'editgender') {
-                    dataObject.gender = text;
+                    dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
                     alert('Gender change successfully')               
 
                 } 
@@ -195,19 +199,18 @@ document.addEventListener('submit',async function(e) {
 }
 })
 
-
+// click event for edit 
 document.addEventListener('click', function(e) {
-    // console.log(e.target);
     const className = e.target.getAttribute('class');
     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
         e.target.innerHTML = '';
-        
+
         counter = e.target.getAttribute('data-no')
 
         const markup = 
         `
         <form class='formname'>
-            <input type= "text" id="edit${className}" data-no="${counter}" name="edit${className}">
+            <input type= "text" id="edit${className}"  data-no="${counter}" name="edit${className}">
         </form>`;
         e.target.insertAdjacentHTML('beforeend',markup);
     } else if (e.target && className === 'birthdate') {
@@ -224,7 +227,6 @@ document.addEventListener('click', function(e) {
         e.target.insertAdjacentHTML('beforeend',markup);
     }
 
-    // console.log(e.target);
     addDetail = true;
 })
 

@@ -83,3 +83,6 @@ td {
 button {
   background-color: darkgreen;
 }
+#editHover:hover {
+  background-color: #9ac2c9;
+}
