@@ -29,6 +29,7 @@ button:hover {
 }
 
 .main-container {
+  filter: blur(20);
   position: absolute;
   top: 12%;
   margin-left: 20%;
