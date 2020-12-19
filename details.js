@@ -1,11 +1,8 @@
 create= document.querySelector('.btn-create');
 save= document.querySelector('.btn-save');
-cancel= document.querySelector('.btn-cancel');
-update= document.querySelector('.btn-update');
 firstPage = document.querySelector('.page-1');
 secondPage  = document.querySelector('.page-2-main');
 formDetail = document.querySelector('.form-details');
-saveCancelContainer = document.querySelector('.btn-sv-cl')
 tableHead = document.querySelector('thead');
 tableBody = document.querySelector('tbody');
 outerSubmit = document.querySelector('.form-outer')
@@ -54,7 +51,6 @@ class Detail  {
     
     ageCalc () {
         const year = new Date().getFullYear();
-        console.log(year);
         this.age = year - (+this.birthDate.slice(0,4));
         return this.age;
     }
@@ -62,9 +58,9 @@ class Detail  {
 
 // fetch form data
 let h1;
+
 formDetail.addEventListener('submit',function(e) {
     e.preventDefault();
-    
     
     const dataArr = [...new FormData(formDetail)];
     const data = Object.fromEntries(dataArr);
@@ -77,7 +73,6 @@ formDetail.addEventListener('submit',function(e) {
     h1 = new Detail(dataAll);
     dataAll.fullName = h1.name();
     dataAll.age = h1.ageCalc();
-    
     detailObject.push(dataAll);
     storeData(detailObject);
     renderTable();
@@ -125,12 +120,21 @@ const renderTable = function () {
 
 
 const sv = function(e) {
-    if(e.target.getAttribute('class') === 'btn-save' ) {
+    
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
+    try {
+        if(!document.querySelector('#fname').value ||
+            !document.querySelector('#sname').value ||
+            !document.querySelector('#gen').value ||
+            !document.querySelector('#bday').value) {
+                throw new Error( 'data empty, please enter a data')
+        }
+    } catch (err) {
+        alert(err);
+    }
     renderTable();
     
-    }
 }
 save.addEventListener('click',sv)
 
@@ -152,7 +156,7 @@ document.addEventListener('click',function(e) {
 // update data 
 let counter ;
 let addDetail = false;
-document.addEventListener('submit', function(e) {
+document.addEventListener('submit',async function(e) {
     e.preventDefault();
     if (addDetail ) {
         const idName = e.target.firstElementChild.getAttribute('id');
@@ -163,23 +167,24 @@ document.addEventListener('submit', function(e) {
                 if(idName === 'editfname' ) {
                     dataObject.firstName = text;
                     const xdata = new Detail(dataObject);
-                    dataObject.fullName = xdata.name();               
-                    console.log(dataObject);
+                    dataObject.fullName = xdata.name();
+                    alert('FirstName & FullName change successfully')               
                 } else if(idName === 'editsname' ) {
-                    console.log(text);
                     dataObject.surname = text;
                     const xdata = new Detail(dataObject);
-                    dataObject.fullName = xdata.name();               
-                    console.log(dataObject);
+                    dataObject.fullName = xdata.name();
+                    alert('Surname & FullName change successfully')               
+
                 } else if (idName === 'editgender') {
-                    console.log(text);
                     dataObject.gender = text;
+                    alert('Gender change successfully')               
+
                 } 
                 else if (idName === 'editbirthdate') {
-                    console.log(text);
                     dataObject.birthDate = text;
                     const xdata = new Detail(dataObject);
                     dataObject.age = xdata.ageCalc();
+                    alert('Birthdate & Age change successfully')
                 }
 
             }
@@ -187,13 +192,12 @@ document.addEventListener('submit', function(e) {
 
         storeData(data) 
         renderTable();
-        console.log(data);
 }
 })
 
 
 document.addEventListener('click', function(e) {
-    console.log(e.target);
+    // console.log(e.target);
     const className = e.target.getAttribute('class');
     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
         e.target.innerHTML = '';
@@ -220,7 +224,7 @@ document.addEventListener('click', function(e) {
         e.target.insertAdjacentHTML('beforeend',markup);
     }
 
-    console.log(e.target);
+    // console.log(e.target);
     addDetail = true;
 })
 
