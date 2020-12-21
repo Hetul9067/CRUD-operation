@@ -10,7 +10,6 @@ outerSubmit = document.querySelector('.form-outer')
 
 let detailObject=[] ;
 const database = [];
-const svClAns = [];
 let getData;
 
 //set data on local storage
@@ -59,27 +58,17 @@ class Detail  {
 
 
 // fetch form data
-let h1;
-
 formDetail.addEventListener('submit',function(e) {
     e.preventDefault();
-    
     const dataArr = [...new FormData(formDetail)];
     const data = Object.fromEntries(dataArr);
-    const dataAll = {
-        firstName : data.fname,
-        surname : data.sname,
-        gender : data.gen,
-        birthDate : data.bday,
-    }
-    h1 = new Detail(dataAll);
-    dataAll.fullName = h1.name();
-    dataAll.age = h1.ageCalc();
+    const h1 = new Detail(data);
+    data.fullName = h1.name();
+    data.age = h1.ageCalc();
     detailObject.push(h1);
     storeData(detailObject);
     renderTable();
     formDetail.reset();
-    
 })
 
 //render a first page
@@ -90,11 +79,8 @@ const renderTable = function () {
     else {
         tableBody.innerHTML = '';
         return;
-
     }
     tableBody.innerHTML = '';
-    
-    
     detailObject.forEach(function(data, i,arr) {
         const markup = `
         <tr>
@@ -114,38 +100,24 @@ const renderTable = function () {
     });
 }
 
-
-
-
-
 //save button
 const sv = function(e) {
     
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
-    
     renderTable();
-    
 }
 save.addEventListener('click',sv)
 
-
-
 // delete button call back function
-
 document.addEventListener('click',function(e) {
     if(e.target && e.target.getAttribute('id') === 'btn-del') {
-        console.log(e.target);
-        // console.log(dataObject);
         const data = getLocalStorage();
         const delEl = e.target.getAttribute('data-no');
         data.splice(delEl,1);
-        
         storeData(data);
         renderTable();
         location.reload();
-        
-        
     }
 })
 
@@ -153,113 +125,202 @@ document.addEventListener('click',function(e) {
 // update data submit 
 let counter ;
 let updateAvailable = false;
-document.addEventListener('submit',function(e) {
+
+
+
+//function which check the change
+const updateChecker = function(data,text,idName) {
+    data.forEach(function(dataObject,i) {
+        if(i === +counter){
+            if(idName === 'editfname' ) {
+                dataObject.firstName = text;
+                const xdata = new Detail(dataObject);
+                dataObject.firstName = xdata.firstName;
+                dataObject.fullName = xdata.name();
+            } else if(idName === 'editsname' ) {
+                dataObject.surname = text;
+                const xdata = new Detail(dataObject);
+                dataObject.surname = xdata.surname;
+                dataObject.fullName = xdata.name();
+            } else if (idName === 'editgender') {
+                dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
+            } 
+        } 
+    });
+    return data;
+}
+
+
+//submit other editted element
+const updateOtherEl = function(e) {
     e.preventDefault();
-    // console.log('helllo');
     const text = e.target.firstElementChild.value;
-    console.log(updateAvailable);
     if(updateAvailable) {
         if (text) {
             const idName = e.target.firstElementChild.getAttribute('id');
             const data = getLocalStorage();
-            console.log(data);
-            data.forEach(function(dataObject,i,arr) {
-                if(i === +counter){
-                    if(idName === 'editfname' ) {
-
-                        dataObject.firstName = text;
-                        const xdata = new Detail(dataObject);
-                        dataObject.firstName = xdata.firstName;
-                        dataObject.fullName = xdata.name();
-                    } else if(idName === 'editsname' ) {
-                        dataObject.surname = text;
-                        const xdata = new Detail(dataObject);
-                        dataObject.surname = xdata.surname;
-
-                        dataObject.fullName = xdata.name();
-
-                    } else if (idName === 'editgender') {
-                        dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
-
-                    } 
-
-                }
-            })
-
-            storeData(data)
+            const updateData = updateChecker(data,text,idName);
+            storeData(updateData)
             renderTable();
-            
-
-        } else {
+        } 
+        else  {
             e.target.innerHTML='';
             renderTable();
         }
         updateAvailable = false;
     }
-})
+}
+
+document.addEventListener('submit',updateOtherEl)
 
 
 //date update function
 const dateSubmit = function(event) {
     const text = event.target.value;
     if(event.keyCode === 13 && text) {
-        const idName = event.target.getAttribute('id');
         const data = getLocalStorage();
-        data.forEach(function(dataObject,i,arr) {
-            if(idName === 'editbirthdate') {
+        data.forEach(function(dataObject,i) {
+            if(i === +counter ) {
                 dataObject.birthDate = text;
                 const xdata = new Detail(dataObject);
                 dataObject.age = xdata.ageCalc();
-                // console.log(dataObject);
-            }
+            }    
         })
         storeData(data);
         renderTable();
+
     } else if(event.keyCode === 13) {
         event.target.parentElement.innerHTML = '';
         renderTable();
     } 
-
 }
 
+// select a markup for editting
+const htmlElement = function(className,counter) {
+    const birthDateText = "min='1950-01-01' max='2020-01-01' onkeydown='dateSubmit(event)'>"
+    const value = className === 'birthdate' ? 'date' : 'text' ;
+    const markup = 
+        `
+        <form class='formname'>
+            <input type=${value} id="edit${className}" data-no="${counter}" name="edit${className}" ${className === 'birthdate' ? birthDateText : '>'}
+        </form>`;
+    return  markup;
+}
 
-// click event for edit 
-document.addEventListener('click', function(e) {
+// click event for update
+const editClickEvent = function(e) {
     const className = e.target.getAttribute('class');
     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
         e.target.innerHTML = '';
-
         counter = e.target.getAttribute('data-no')
-
-        const markup = 
-            `
-            <form class='formname'>
-                <input type= "text" id="edit${className}"  data-no="${counter}" name="edit${className}">
-            </form>`;
-        e.target.insertAdjacentHTML('beforeend',markup);
+        e.target.insertAdjacentHTML('beforeend',htmlElement(className,counter));
         updateAvailable=true;
-
     } 
     else if (e.target && className === 'birthdate') {
         e.target.innerHTML = '';
-        console.log(e.target);
         counter = e.target.getAttribute('data-no');
-
-        const markup = 
-            `
-            <form class='formname'>
-                <input type="date" id="edit${className}" data-no="${counter}" name="edit${className}"  onkeydown='dateSubmit(event)'>
-            </form>`;
-        e.target.insertAdjacentHTML('beforeend',markup);
-        // console.log('click');
-        updateAvailable=true;
+        e.target.insertAdjacentHTML('beforeend',htmlElement(className,counter));
     }
+}
 
-})
-
-
+// click event for edit 
+document.addEventListener('click', editClickEvent );
+   
 const init = function() {
     getLocalStorage();
     renderTable();
 }
 init();
+
+
+// // update data submit 
+// let counter ;
+// let updateAvailable = false;
+// document.addEventListener('submit',function(e) {
+//     e.preventDefault();
+//     const text = e.target.firstElementChild.value;
+//     if(updateAvailable) {
+//         if (text) {
+//             const idName = e.target.firstElementChild.getAttribute('id');
+//             const data = getLocalStorage();
+//             data.forEach(function(dataObject,i,arr) {
+//                 if(i === +counter){
+//                     if(idName === 'editfname' ) {
+//                         dataObject.firstName = text;
+//                         const xdata = new Detail(dataObject);
+//                         dataObject.firstName = xdata.firstName;
+//                         dataObject.fullName = xdata.name();
+//                     } else if(idName === 'editsname' ) {
+//                         dataObject.surname = text;
+//                         const xdata = new Detail(dataObject);
+//                         dataObject.surname = xdata.surname;
+//                         dataObject.fullName = xdata.name();
+//                     } else if (idName === 'editgender') {
+//                         dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
+//                     } 
+//                 }
+//             })
+//             storeData(data)
+//             renderTable();
+//         } 
+//         else  {
+//             console.log('hii i am a bug');
+//             e.target.innerHTML='';
+//             renderTable();
+//         }
+//         updateAvailable = false;
+//     }
+// })
+
+
+// //date update function
+// const dateSubmit = function(event) {
+//     const text = event.target.value;
+//     if(event.keyCode === 13 && text) {
+//         const idName = event.target.getAttribute('id');
+        
+//         const data = getLocalStorage();
+//         data.forEach(function(dataObject,i,arr) {
+//             if(i === +counter ) {
+//                 if(idName === 'editbirthdate') {
+//                     dataObject.birthDate = text;
+//                     const xdata = new Detail(dataObject);
+//                     dataObject.age = xdata.ageCalc();
+//                 }
+//             }    
+//         })
+//         storeData(data);
+//         renderTable();
+//     } else if(event.keyCode === 13) {
+//         event.target.parentElement.innerHTML = '';
+//         renderTable();
+//     } 
+// }
+
+// // click event for edit 
+// document.addEventListener('click', function(e) {
+//     const className = e.target.getAttribute('class');
+//     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
+//         e.target.innerHTML = '';
+//         counter = e.target.getAttribute('data-no')
+//         const markup = 
+//             `
+//             <form class='formname'>
+//                 <input type= "text" id="edit${className}"  data-no="${counter}" name="edit${className}">
+//             </form>`;
+//         e.target.insertAdjacentHTML('beforeend',markup);
+//         updateAvailable=true;
+//     } 
+//     else if (e.target && className === 'birthdate') {
+//         e.target.innerHTML = '';
+//         counter = e.target.getAttribute('data-no');
+//         const markup = 
+//             `
+//             <form class='formname'>
+//                 <input type="date" id="edit${className}" data-no="${counter}" name="edit${className}" min="1950-01-01" max="2020-01-01" onkeydown='dateSubmit(event)'>
+//             </form>`;
+//         e.target.insertAdjacentHTML('beforeend',markup);
+//     }
+// })
+
+
