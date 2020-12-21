@@ -1,11 +1,13 @@
-create= document.querySelector('.btn-create');
-save= document.querySelector('.btn-save');
-firstPage = document.querySelector('.page-1');
-secondPage  = document.querySelector('.page-2-main');
-formDetail = document.querySelector('.form-details');
-tableHead = document.querySelector('thead');
-tableBody = document.querySelector('tbody');
-outerSubmit = document.querySelector('.form-outer')
+
+'use strict'
+const create= document.querySelector('.btn-create');
+const save= document.querySelector('.btn-save');
+const firstPage = document.querySelector('.page-1');
+const secondPage  = document.querySelector('.page-2-main');
+const formDetail = document.querySelector('.form-details');
+const tableHead = document.querySelector('thead');
+const tableBody = document.querySelector('tbody');
+const outerSubmit = document.querySelector('.form-outer')
 
 
 let detailObject=[] ;
@@ -231,96 +233,4 @@ const init = function() {
     renderTable();
 }
 init();
-
-
-// // update data submit 
-// let counter ;
-// let updateAvailable = false;
-// document.addEventListener('submit',function(e) {
-//     e.preventDefault();
-//     const text = e.target.firstElementChild.value;
-//     if(updateAvailable) {
-//         if (text) {
-//             const idName = e.target.firstElementChild.getAttribute('id');
-//             const data = getLocalStorage();
-//             data.forEach(function(dataObject,i,arr) {
-//                 if(i === +counter){
-//                     if(idName === 'editfname' ) {
-//                         dataObject.firstName = text;
-//                         const xdata = new Detail(dataObject);
-//                         dataObject.firstName = xdata.firstName;
-//                         dataObject.fullName = xdata.name();
-//                     } else if(idName === 'editsname' ) {
-//                         dataObject.surname = text;
-//                         const xdata = new Detail(dataObject);
-//                         dataObject.surname = xdata.surname;
-//                         dataObject.fullName = xdata.name();
-//                     } else if (idName === 'editgender') {
-//                         dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
-//                     } 
-//                 }
-//             })
-//             storeData(data)
-//             renderTable();
-//         } 
-//         else  {
-//             console.log('hii i am a bug');
-//             e.target.innerHTML='';
-//             renderTable();
-//         }
-//         updateAvailable = false;
-//     }
-// })
-
-
-// //date update function
-// const dateSubmit = function(event) {
-//     const text = event.target.value;
-//     if(event.keyCode === 13 && text) {
-//         const idName = event.target.getAttribute('id');
-        
-//         const data = getLocalStorage();
-//         data.forEach(function(dataObject,i,arr) {
-//             if(i === +counter ) {
-//                 if(idName === 'editbirthdate') {
-//                     dataObject.birthDate = text;
-//                     const xdata = new Detail(dataObject);
-//                     dataObject.age = xdata.ageCalc();
-//                 }
-//             }    
-//         })
-//         storeData(data);
-//         renderTable();
-//     } else if(event.keyCode === 13) {
-//         event.target.parentElement.innerHTML = '';
-//         renderTable();
-//     } 
-// }
-
-// // click event for edit 
-// document.addEventListener('click', function(e) {
-//     const className = e.target.getAttribute('class');
-//     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
-//         e.target.innerHTML = '';
-//         counter = e.target.getAttribute('data-no')
-//         const markup = 
-//             `
-//             <form class='formname'>
-//                 <input type= "text" id="edit${className}"  data-no="${counter}" name="edit${className}">
-//             </form>`;
-//         e.target.insertAdjacentHTML('beforeend',markup);
-//         updateAvailable=true;
-//     } 
-//     else if (e.target && className === 'birthdate') {
-//         e.target.innerHTML = '';
-//         counter = e.target.getAttribute('data-no');
-//         const markup = 
-//             `
-//             <form class='formname'>
-//                 <input type="date" id="edit${className}" data-no="${counter}" name="edit${className}" min="1950-01-01" max="2020-01-01" onkeydown='dateSubmit(event)'>
-//             </form>`;
-//         e.target.insertAdjacentHTML('beforeend',markup);
-//     }
-// })
-
 
