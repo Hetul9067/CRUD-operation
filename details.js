@@ -35,7 +35,7 @@ const getLocalStorage = function() {
 // for opening second page;
 const openSecondPage = function () {
     console.log(date);
-    document.querySelector('#bday').setAttribute('max',`${year}-${month + 1}-${d}`);
+    document.querySelector('#birthDate').setAttribute('max',`${year}-${month + 1}-${d}`);
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
 }
@@ -116,23 +116,33 @@ const renderTable = function () {
 
 //save button
 const sv = function(e) {
-    const fname = formDetail.querySelector('#fname').value;
-    const sname = formDetail.querySelector('#sname').value;
-    const gen = formDetail.querySelector('#gen').value;
-    const bday = formDetail.querySelector('#bday').value;
-    const timeStamp = new Date(bday).getTime();
+    // const fname = formDetail.querySelector('#fname').value;
+    // const sname = formDetail.querySelector('#sname').value;
+    // const gen = formDetail.querySelector('#gen').value;
+    // const bday = formDetail.querySelector('#bday').value;
+    const dataA = [...new FormData(formDetail)];
+    const dataO = Object.fromEntries(dataA);
+    const h1 = new Detail(dataO);
+    console.log(h1);
+    const timeStamp = new Date(h1.birthDate).getTime();
+    if(!h1.firstName || 
+        !h1.surname ||
+        !h1.gender ||
+        !h1.birthDate ) {
+        return false;
+    }
+    if(!h1.birthDate || timeStamp < new Date('1950-01-01').getTime() || timeStamp > dynamicDateStamp ) {
+        if(!h1.birthDate) alert('Oops, birthday is an empty')
+        return false;
+    }
+    const dataBase = getLocalStorage();
+    for(let i=0; i < dataBase.length; i++) {
+        if(dataBase[i].firstName === h1.firstName && dataBase[i].surname === h1.surname && dataBase[i].gender === h1.gender && new Date(dataBase[i].birthDate).getTime() === timeStamp) {
+            formDetail.reset();
+            break;
+        }
+    }
 
-    if(!fname || 
-        !sname ||
-        !gen ||
-        !bday ) {
-        return false;
-    }
-    
-    if(!bday || timeStamp < new Date('1950-01-01').getTime() || timeStamp > dynamicDateStamp ) {
-        if(!bday) alert('Oops, birthday is an empty')
-        return false;
-    }
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
     renderTable();
