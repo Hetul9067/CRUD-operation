@@ -5,12 +5,25 @@ body {
   font-family: Consolas, monaco, monospace;
   font-weight: 400;
   background-color: rgb(206, 211, 208);
+  background-image: url("final.jpg");
+
+  background-attachment: fixed;
+  background-size: cover;
 }
 
+.h-top,
+h1 {
+  background-color: #edd382;
+  position: static;
+  font-size: 1.5em;
+  padding-bottom: 0.5%;
+  padding-top: 0.2em;
+  padding-left: 0.5em;
+}
 header {
-  height: 10vh;
+  height: 15vh;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
 }
 button {
@@ -19,7 +32,7 @@ button {
 }
 .btn-create {
   font-size: 2rem;
-  /* transition: transform 1s ease-in 0s; */
+
   margin-left: 20%;
 }
 button:hover {
@@ -30,9 +43,10 @@ button:hover {
 
 .main-container {
   filter: blur(20);
-  position: absolute;
-  top: 12%;
+  position: relative;
+  top: 30%;
   margin-left: 20%;
+  margin-right: 20%;
   font-size: 1.5rem;
 }
 table,
@@ -41,21 +55,36 @@ td {
   border: 1px solid black;
   padding: 1rem;
 }
-td {
+.main-container table {
+  background-color: red;
+}
+.main-container th {
+  background-color: #252627;
+  color: #d3d4d9;
+  font-size: 1.5em;
+  box-sizing: border-box;
+  border-radius: 0.3em;
+}
+.main-container td {
+  background-image: linear-gradient(to right, #beb7a4, #d4f5f5);
+  font-size: 1.2em;
+  border-radius: 0.3em;
   padding: 0rem 1.5rem;
+}
+.blur {
+  backdrop-filter: blur(200px);
 }
 .hidden {
   display: none;
 }
 .page-2-main {
-  /* display: none; */
-
   position: absolute;
   left: 20%;
   right: 20%;
   top: 15%;
   bottom: 15%;
-  background-color: rgb(180, 194, 88, 0.5);
+
+  background-image: linear-gradient(to right, #a2999e, #f7d4bc);
 }
 .form-outer {
   margin-left: 20%;
@@ -69,21 +98,32 @@ td {
 form table {
   height: 40vh;
 }
-
-form table th,
+.form-details table th,
 td {
   padding: 0 3rem;
   color: black;
-  font-size: 1.5rem;
 }
+.form-details th {
+  font-size: 3rem;
+  font-weight: 600;
+}
+.form-details td {
+  font-size: 3rem;
+  font-weight: 400;
+}
+
 .btn-sv {
   display: flex;
   justify-content: center;
 }
-
-button {
+.btn-save {
   background-color: darkgreen;
 }
+
 #editHover:hover {
-  background-color: #9ac2c9;
+  background-color: #5d5d81;
 }
+
+/* button {
+  background-color: darkgreen;
+} */

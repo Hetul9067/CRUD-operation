@@ -33,8 +33,15 @@ const getLocalStorage = function() {
 
 
 // for opening second page;
-const openSecondPage = function () {
-    console.log(date);
+const openSecondPage = function (e) {
+    // blur(200px)
+    // console.log(date);
+    document.body.classList.toggle('blur');
+    // console.log(e.target.getAttribute('class').split(' '));
+    // if(e.target.getAttribute('class').split(' ')[1] == 'btn-create') {
+    //     console.log('hii');
+    //     document.body.style.backdropFilter =blur('200px');
+    // }
     document.querySelector('#birthDate').setAttribute('max',`${year}-${month + 1}-${d}`);
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
@@ -98,14 +105,15 @@ const renderTable = function () {
     detailObject.forEach(function(data, i,arr) {
         const markup = `
         <tr>
-            <td class="fname" id='editHover' data-no="${i}" >${data.firstName}</td>
+            <td class="fname " id='editHover' data-no="${i}" >${data.firstName}</td>
             <td class='sname' id='editHover' data-no="${i}">${data.surname}</td>
             <td>${data.fullName}</td>
             <td >${data.age} </td>
             <td class="gender" id='editHover' data-no="${i}">${data.gender}</td>
             <td class="birthdate" id='editHover'  data-no="${i}">${data.birthDate}</td>
             <td id="del" >
-                <button type = "button" id="btn-del" data-no="${i}">Delete</button>
+                <button type = "button" id="btn-del" class='rounded-pill border border-danger bg-danger bg-gradient' data-no="${i}">
+                    <i class="fas fa-trash-alt"></i> Delete</button>
             </td>
         </tr>
         

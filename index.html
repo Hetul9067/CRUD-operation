@@ -10,16 +10,21 @@
         <script async src="details.js"></script>
     </head>
     <body>
+        <div class='h-top'>
+          <h1>
+            <i class="fas fa-home"></i> <u>Personal Details</u></h1>  
+        </div>
         <div class="page-1">
             <header>
-                <button type="button" class="btn btn-outline-secondary btn-create">Create</button>
+                <button type="button" class=" btn-create rounded-pill bg-success bg-gradient">
+                    <i class="far fa-plus-square"></i> Create</button>
             </header>
             <main class="main-container">
-                <table class="tb-out" >
+                <table class="tb-out table-striped" >
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
+                            <th >Name</th>
+                            <th >Surname</th>
                             <th>Fullname</th>
                             <th>Age(year)</th>
                             <th>Gender</th>
@@ -52,26 +57,37 @@
                 <form class="form-details">
                     <table>
                         <tr>
-                            <th><label for="firstName">First Name :</label></th>
-                            <td><input type="text"  id="firstName" name="firstName"   required></td>
+                            <th><label class='form-label' for="firstName">First Name :</label></th>
+                            <td><input type="text"  id="firstName" name="firstName"  class='form-control form-control-lg' required></td>
                         </tr>
                         <tr>
                             <th><label for="surname">Surname :</label></th>
-                            <td><input type="text" id="surname" name="surname"  required></td>
+                            <td><input type="text" id="surname" name="surname" class='form-control form-control-lg' required></td>
                         </tr>
                         <tr>
                             <th><label for="gender">Gender :</label></th>
-                            <td><input type="text" id="gender" name="gender"  required></td>
-                        </tr>
+                            <div class='form-check'>
+                                <td colspan="2">
+                                    <input type="radio" id="male" name="gender" class='form-check-input' value='male' checked>
+                                    <label for='male' class='form-check-label'>
+                                        <i class="fas fa-male"></i> Male</label> <br>
+                                    <input type="radio" id="female" name="gender" class='form-check-input' value='female'>
+                                    <label for='female' class='form-check-label'>
+                                        <i class="fas fa-female"></i> Female</label> </td>
+                                </div>
+                        </tr> 
+                        
                         <tr>
                             <th><label for="birthDate">BirthDate :</label></th>
-                            <td><input type="date" id="birthDate" name="birthDate" min="1950-01-01" ></td>
+                            <td><input type="date" id="birthDate" name="birthDate" min="1950-01-01" class='form-control form-control-lg '></td>
                             
                         </tr>
                     </table>    
                     <div class="btn-sv ">
-                        <button type="submit" value= "submit" class="btn-save" >Save</button>
-                        <button type='button' class='btn-cancel'>Cancel</button>
+                        <button type="submit" value= "submit" class=" btn-save bg-success bg-gradient " >
+                            <i class="fas fa-save" ></i> Save</button>
+                        <button type='button' class='btn-cancel bg-danger bg-gradient'>
+                            <i class="fas fa-window-close"></i> Cancel</button>
                     </div>
                 </form>
             
