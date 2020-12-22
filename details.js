@@ -1,5 +1,5 @@
-
 'use strict'
+
 const create= document.querySelector('.btn-create');
 const save= document.querySelector('.btn-save');
 const firstPage = document.querySelector('.page-1');
@@ -8,12 +8,17 @@ const formDetail = document.querySelector('.form-details');
 const tableHead = document.querySelector('thead');
 const tableBody = document.querySelector('tbody');
 const outerSubmit = document.querySelector('.form-outer')
-
+const cancel=document.querySelector('.btn-cancel')
 
 let detailObject=[] ;
 const database = [];
 let getData;
-
+const date = new Date();
+const year = date.getFullYear();
+const month = date.getMonth();
+const d = date.getDate();
+const dynamicDateStamp = date.getTime()
+console.log(year,month,d);
 //set data on local storage
 const storeData = function(database) {
     localStorage.setItem('PersonalDetail',JSON.stringify(database));
@@ -29,10 +34,12 @@ const getLocalStorage = function() {
 
 // for opening second page;
 const openSecondPage = function () {
+    console.log(date);
+    document.querySelector('#bday').setAttribute('max',`${year}-${month + 1}-${d}`);
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
 }
-
+cancel.addEventListener('click',openSecondPage)
 create.addEventListener('click',openSecondPage );
 
 // detail class
@@ -59,9 +66,13 @@ class Detail  {
 }
 
 
+
+
+
 // fetch form data
 formDetail.addEventListener('submit',function(e) {
     e.preventDefault();
+    
     const dataArr = [...new FormData(formDetail)];
     const data = Object.fromEntries(dataArr);
     const h1 = new Detail(data);
@@ -72,6 +83,7 @@ formDetail.addEventListener('submit',function(e) {
     renderTable();
     formDetail.reset();
 })
+
 
 //render a first page
 const renderTable = function () {
@@ -104,7 +116,23 @@ const renderTable = function () {
 
 //save button
 const sv = function(e) {
+    const fname = formDetail.querySelector('#fname').value;
+    const sname = formDetail.querySelector('#sname').value;
+    const gen = formDetail.querySelector('#gen').value;
+    const bday = formDetail.querySelector('#bday').value;
+    const timeStamp = new Date(bday).getTime();
+
+    if(!fname || 
+        !sname ||
+        !gen ||
+        !bday ) {
+        return false;
+    }
     
+    if(!bday || timeStamp < new Date('1950-01-01').getTime() || timeStamp > dynamicDateStamp ) {
+        if(!bday) alert('Oops, birthday is an empty')
+        return false;
+    }
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
     renderTable();
@@ -180,6 +208,15 @@ document.addEventListener('submit',updateOtherEl)
 const dateSubmit = function(event) {
     const text = event.target.value;
     if(event.keyCode === 13 && text) {
+        const timeStp = new Date(text).getTime();
+        if(timeStp < new Date('1950-01-01').getTime()  ) {
+            alert('Oops, birthday is less than 1950')
+            return false;
+        }
+        if(timeStp > dynamicDateStamp) {
+            alert('Oops, birthday is grater than current date')
+            return false;
+        }
         const data = getLocalStorage();
         data.forEach(function(dataObject,i) {
             if(i === +counter ) {
@@ -199,7 +236,7 @@ const dateSubmit = function(event) {
 
 // select a markup for editting
 const htmlElement = function(className,counter) {
-    const birthDateText = "min='1950-01-01' max='2020-01-01' onkeydown='dateSubmit(event)'>"
+    const birthDateText = "min='1950-01-01' max='2020-01-01' onkeydown='dateSubmit(event)' >"
     const value = className === 'birthdate' ? 'date' : 'text' ;
     const markup = 
         `
