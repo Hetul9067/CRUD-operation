@@ -105,7 +105,7 @@ const renderTable = function () {
     detailObject.forEach(function(data, i,arr) {
         const markup = `
         <tr>
-            <td class="fname " id='editHover' data-no="${i}" >${data.firstName}</td>
+            <td class="fname" id='editHover' data-no="${i}" >${data.firstName}</td>
             <td class='sname' id='editHover' data-no="${i}">${data.surname}</td>
             <td>${data.fullName}</td>
             <td >${data.age} </td>
@@ -124,10 +124,7 @@ const renderTable = function () {
 
 //save button
 const sv = function(e) {
-    // const fname = formDetail.querySelector('#fname').value;
-    // const sname = formDetail.querySelector('#sname').value;
-    // const gen = formDetail.querySelector('#gen').value;
-    // const bday = formDetail.querySelector('#bday').value;
+    
     const dataA = [...new FormData(formDetail)];
     const dataO = Object.fromEntries(dataA);
     const h1 = new Detail(dataO);
@@ -153,6 +150,7 @@ const sv = function(e) {
 
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
+    
     renderTable();
 }
 save.addEventListener('click',sv)
@@ -267,8 +265,10 @@ const htmlElement = function(className,counter) {
 // click event for update
 const editClickEvent = function(e) {
     const className = e.target.getAttribute('class');
+    console.log(e.target);
     if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
         e.target.innerHTML = '';
+        console.log('hii');
         counter = e.target.getAttribute('data-no')
         e.target.insertAdjacentHTML('beforeend',htmlElement(className,counter));
         updateAvailable=true;
