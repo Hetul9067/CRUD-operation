@@ -140,11 +140,12 @@ const sv = function(e) {
         return false;
     }
     const dataBase = getLocalStorage();
-    for(let i=0; i < dataBase.length; i++) {
-        if(dataBase[i].firstName === h1.firstName && dataBase[i].surname === h1.surname && dataBase[i].gender === h1.gender && new Date(dataBase[i].birthDate).getTime() === timeStamp) {
-            formDetail.reset();
-            break;
-        }
+    if(dataBase)
+        for(let i=0; i < dataBase.length; i++) {
+            if(dataBase[i].firstName === h1.firstName && dataBase[i].surname === h1.surname && dataBase[i].gender === h1.gender && new Date(dataBase[i].birthDate).getTime() === timeStamp) {
+                formDetail.reset();
+                break;
+            }
     }
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
