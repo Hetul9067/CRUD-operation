@@ -1,13 +1,15 @@
 import {dynamicDateStamp,getLocalStorage,storeData,Detail,renderTable} from './details.js';
 export class UpdateCl {
+    _dataGet = getLocalStorage();
     _counter ;
     _updateAvailable = false;
 
 
-
-    //function which check the change
-    _updateChecker (data,text,idName,counter) {
+    
+    _updateChecker (text,idName,counter) {
+        const data = getLocalStorage();
         data.forEach(function(dataObject,i) {
+
             if(i === +counter){
                 if(idName === 'editfname' ) {
                     dataObject.firstName = text;
@@ -24,19 +26,66 @@ export class UpdateCl {
                 } 
             } 
         });
-        return data;
-    }
+    return data;
+}
+            
+            
+            
+    _duplicateChecker(text,idName,counter,dateDuplicate = false) {
+        const data = getLocalStorage();
+        let fname= data[+counter].firstName;
+        let sname=data[+counter].surname;
+        let gen=data[+counter].gender;
+        let bDay = data[+counter].birthDate;
+        if(idName === 'editfname' ) {
+            fname = text[0].toUpperCase() + text.slice(1).toLowerCase();
+        } else if(idName === 'editsname' ) {
+            sname =  text[0].toUpperCase() + text.slice(1).toLowerCase();
+            
 
+        } else if (idName === 'editgender') {
+            gen= text[0].toUpperCase() + text.slice(1).toLowerCase();
+            
+        } else if (dateDuplicate) {
+            bDay = text;
+        }
+        
+        let duplicateData = false;
+        let dateC = 1;
+        console.log(fname,sname,gen);
+        for(let i=0;i<data.length;i++) {
+            if(data[i].firstName === fname && 
+                data[i].surname === sname &&
+                data[i].gender === gen &&
+                data[i].birthDate === bDay) {
+                    duplicateData = true;
+                    dateC = 0;
+                    
+
+            }
+                
+        }
+        if(dateDuplicate) {
+            return dateC;
+        }
+        if(duplicateData) {
+            duplicateData = false;
+            return data;
+        }
+        console.log(this);
+        return UpdateCl.prototype._updateChecker(text,idName,counter);
+        
+    }
 
     _UpdateSubmitEventHandler() {
         document.addEventListener('submit',function(e) {
-            e.preventDefault();
-            const text = e.target.firstElementChild.value;
+            
             if(this._updateAvailable) {
+                e.preventDefault();
+                const text = e.target.firstElementChild.value;
                 if (text) {
                     const idName = e.target.firstElementChild.getAttribute('id');
-                    const data = getLocalStorage();
-                    const updateData = UpdateCl.prototype._updateChecker(data,text,idName,this._counter);
+                    const updateData = UpdateCl.prototype._duplicateChecker(text,idName,this._counter);
                     storeData(updateData)
                     renderTable();
                 } 
@@ -44,8 +93,9 @@ export class UpdateCl {
                     e.target.innerHTML='';
                     renderTable();
                 }
-                this._updateAvailable = false;
             }
+            this._updateAvailable = false;
+            
         })
     }
 
@@ -53,18 +103,20 @@ export class UpdateCl {
     dateSubmit(counter,event) {
         const text = event.target.value;
         if(event.keyCode === 13 && text) {
-            const timeStp = new Date(text).getTime();
             if(!event.target.checkValidity()) {
                 return;
             }
+            const changeUp = UpdateCl.prototype._duplicateChecker(text,' ',counter,true);
             const data = getLocalStorage();
-            data.forEach(function(dataObject,i) {
-                if(i === +counter ) {
-                    dataObject.birthDate = text;
-                    const xdata = new Detail(dataObject);
-                    dataObject.age = xdata.ageCalc();
-                }    
-            })
+            if(changeUp) {
+                data.forEach(function(dataObject,i) {
+                    if(i === +counter ) {
+                        dataObject.birthDate = text;
+                        const xdata = new Detail(dataObject);
+                        dataObject.age = xdata.ageCalc();
+                    }    
+                })
+            }
             storeData(data);
             renderTable();
         }

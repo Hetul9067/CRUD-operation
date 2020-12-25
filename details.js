@@ -21,7 +21,6 @@ const year = date.getFullYear();
 const month = date.getMonth();
 const d = date.getDate();
 export const dynamicDateStamp = date.getTime()
-console.log(year,month,d);
 
 //set data on local storage
 export const storeData = function(database) {
@@ -71,22 +70,24 @@ export class Detail  {
 }
 
 
-
+let sub  = false
 
 
 // fetch form data
 formDetail.addEventListener('submit',function(e) {
     e.preventDefault();
-    
-    const dataArr = [...new FormData(formDetail)];
-    const data = Object.fromEntries(dataArr);
-    const h1 = new Detail(data);
-    data.fullName = h1.name();
-    data.age = h1.ageCalc();
-    detailObject.push(h1);
-    storeData(detailObject);
-    renderTable();
-    formDetail.reset();
+    if(sub) {
+        const dataArr = [...new FormData(formDetail)];
+        const data = Object.fromEntries(dataArr);
+        const h1 = new Detail(data);
+        data.fullName = h1.name();
+        data.age = h1.ageCalc();
+        detailObject.push(h1);
+        storeData(detailObject);
+        renderTable();
+        formDetail.reset();
+        sub = false;
+    }
 })
 
 
@@ -126,7 +127,6 @@ const sv = function(e) {
     const dataA = [...new FormData(formDetail)];
     const dataO = Object.fromEntries(dataA);
     const h1 = new Detail(dataO);
-    console.log(h1);
     const timeStamp = new Date(h1.birthDate).getTime();
     if(!h1.firstName || 
         !h1.surname ||
@@ -134,6 +134,7 @@ const sv = function(e) {
         !h1.birthDate ) {
         return false;
     }
+
     if(!h1.birthDate || timeStamp < new Date('1950-01-01').getTime() || timeStamp > dynamicDateStamp ) {
         if(!h1.birthDate) alert('Oops, birthday is an empty')
         return false;
@@ -145,10 +146,9 @@ const sv = function(e) {
             break;
         }
     }
-
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
-    
+    sub = true;
     renderTable();
 }
 save.addEventListener('click',sv)
