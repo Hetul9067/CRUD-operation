@@ -119,9 +119,15 @@ td {
     font-size: 1.5rem;
     font-weight: 400;
   }
+  .buttonSub {
+    display: inline;
+  }
 }
 
 @media (min-width: 576px) {
+  .buttonSub {
+    display: none;
+  }
   .page-2-main {
     position: absolute;
     left: 20%;

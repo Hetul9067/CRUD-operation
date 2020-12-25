@@ -128,7 +128,8 @@ export class UpdateCl {
 
     // // select a markup for editting
     _htmlElement (className,counter,dateClick) {
-        const birthDateText = "min='1950-01-01' max='2020-01-01' onkeydown='dateClick(event)' required>"
+        const birthDateText = `min='1950-01-01' max='2020-01-01' onkeydown='dateClick(event)' required>
+                               <div class= 'buttonSub' ><input type='submit'>submit</input></div>`
         const value = className === 'birthdate' ? 'date' : 'text' ;
         const markup = 
             `

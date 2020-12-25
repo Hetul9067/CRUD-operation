@@ -174,4 +174,3 @@ const init = function() {
     UpdateCl.prototype._UpdateSubmitEventHandler();
 }
 init();
-
