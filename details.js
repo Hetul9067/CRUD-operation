@@ -1,5 +1,6 @@
+// import {hetul} from './model.js';
+import {UpdateCl} from './update.js';
 'use strict'
-
 const create= document.querySelector('.btn-create');
 const save= document.querySelector('.btn-save');
 const firstPage = document.querySelector('.page-1');
@@ -10,6 +11,8 @@ const tableBody = document.querySelector('tbody');
 const outerSubmit = document.querySelector('.form-outer')
 const cancel=document.querySelector('.btn-cancel')
 
+// hetul();
+
 let detailObject=[] ;
 const database = [];
 let getData;
@@ -17,15 +20,16 @@ const date = new Date();
 const year = date.getFullYear();
 const month = date.getMonth();
 const d = date.getDate();
-const dynamicDateStamp = date.getTime()
+export const dynamicDateStamp = date.getTime()
 console.log(year,month,d);
+
 //set data on local storage
-const storeData = function(database) {
+export const storeData = function(database) {
     localStorage.setItem('PersonalDetail',JSON.stringify(database));
 }
 
 //get data on local storage
-const getLocalStorage = function() {
+export const getLocalStorage = function() {
     getData = JSON.parse(localStorage.getItem('PersonalDetail'));
     return getData;
 }
@@ -34,14 +38,9 @@ const getLocalStorage = function() {
 
 // for opening second page;
 const openSecondPage = function (e) {
-    // blur(200px)
-    // console.log(date);
+
     document.body.classList.toggle('blur');
-    // console.log(e.target.getAttribute('class').split(' '));
-    // if(e.target.getAttribute('class').split(' ')[1] == 'btn-create') {
-    //     console.log('hii');
-    //     document.body.style.backdropFilter =blur('200px');
-    // }
+
     document.querySelector('#birthDate').setAttribute('max',`${year}-${month + 1}-${d}`);
     firstPage.classList.toggle('hidden');
     secondPage.classList.toggle('hidden');
@@ -50,9 +49,8 @@ cancel.addEventListener('click',openSecondPage)
 create.addEventListener('click',openSecondPage );
 
 // detail class
-class Detail  {
+export class Detail  {
     constructor (data) {
-        // console.log(firstName);
         this.firstName = data.firstName[0].toUpperCase() + data.firstName.slice(1).toLowerCase();
         this.surname = data.surname[0].toUpperCase() + data.surname.slice(1).toLowerCase();
         this.gender = data.gender[0].toUpperCase() + data.gender.slice(1).toLowerCase();
@@ -93,7 +91,7 @@ formDetail.addEventListener('submit',function(e) {
 
 
 //render a first page
-const renderTable = function () {
+export const renderTable = function () {
     if(localStorage.length > 0) {
         detailObject = getLocalStorage();
     }
@@ -168,124 +166,11 @@ document.addEventListener('click',function(e) {
 })
 
 
-// update data submit 
-let counter ;
-let updateAvailable = false;
-
-
-
-//function which check the change
-const updateChecker = function(data,text,idName) {
-    data.forEach(function(dataObject,i) {
-        if(i === +counter){
-            if(idName === 'editfname' ) {
-                dataObject.firstName = text;
-                const xdata = new Detail(dataObject);
-                dataObject.firstName = xdata.firstName;
-                dataObject.fullName = xdata.name();
-            } else if(idName === 'editsname' ) {
-                dataObject.surname = text;
-                const xdata = new Detail(dataObject);
-                dataObject.surname = xdata.surname;
-                dataObject.fullName = xdata.name();
-            } else if (idName === 'editgender') {
-                dataObject.gender = text[0].toUpperCase() + text.slice(1).toLowerCase();
-            } 
-        } 
-    });
-    return data;
-}
-
-
-//submit other editted element
-const updateOtherEl = function(e) {
-    e.preventDefault();
-    const text = e.target.firstElementChild.value;
-    if(updateAvailable) {
-        if (text) {
-            const idName = e.target.firstElementChild.getAttribute('id');
-            const data = getLocalStorage();
-            const updateData = updateChecker(data,text,idName);
-            storeData(updateData)
-            renderTable();
-        } 
-        else  {
-            e.target.innerHTML='';
-            renderTable();
-        }
-        updateAvailable = false;
-    }
-}
-
-document.addEventListener('submit',updateOtherEl)
-
-
-//date update function
-const dateSubmit = function(event) {
-    const text = event.target.value;
-    if(event.keyCode === 13 && text) {
-        const timeStp = new Date(text).getTime();
-        if(timeStp < new Date('1950-01-01').getTime()  ) {
-            alert('Oops, birthday is less than 1950')
-            return false;
-        }
-        if(timeStp > dynamicDateStamp) {
-            alert('Oops, birthday is grater than current date')
-            return false;
-        }
-        const data = getLocalStorage();
-        data.forEach(function(dataObject,i) {
-            if(i === +counter ) {
-                dataObject.birthDate = text;
-                const xdata = new Detail(dataObject);
-                dataObject.age = xdata.ageCalc();
-            }    
-        })
-        storeData(data);
-        renderTable();
-
-    } else if(event.keyCode === 13) {
-        event.target.parentElement.innerHTML = '';
-        renderTable();
-    } 
-}
-
-// select a markup for editting
-const htmlElement = function(className,counter) {
-    const birthDateText = "min='1950-01-01' max='2020-01-01' onkeydown='dateSubmit(event)' >"
-    const value = className === 'birthdate' ? 'date' : 'text' ;
-    const markup = 
-        `
-        <form class='formname'>
-            <input type=${value} id="edit${className}" data-no="${counter}" name="edit${className}" ${className === 'birthdate' ? birthDateText : '>'}
-        </form>`;
-    return  markup;
-}
-
-// click event for update
-const editClickEvent = function(e) {
-    const className = e.target.getAttribute('class');
-    console.log(e.target);
-    if(e.target && className === 'fname' || className === 'sname' || className === 'gender'  ) {
-        e.target.innerHTML = '';
-        console.log('hii');
-        counter = e.target.getAttribute('data-no')
-        e.target.insertAdjacentHTML('beforeend',htmlElement(className,counter));
-        updateAvailable=true;
-    } 
-    else if (e.target && className === 'birthdate') {
-        e.target.innerHTML = '';
-        counter = e.target.getAttribute('data-no');
-        e.target.insertAdjacentHTML('beforeend',htmlElement(className,counter));
-    }
-}
-
-// click event for edit 
-document.addEventListener('click', editClickEvent );
-   
 const init = function() {
     getLocalStorage();
     renderTable();
+    UpdateCl.prototype._updateClickEventHandler();
+    UpdateCl.prototype._UpdateSubmitEventHandler();
 }
 init();
 
