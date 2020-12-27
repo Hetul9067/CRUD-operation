@@ -52,7 +52,6 @@ export class UpdateCl {
         
         let duplicateData = false;
         let dateC = 1;
-        console.log(fname,sname,gen);
         for(let i=0;i<data.length;i++) {
             if(data[i].firstName === fname && 
                 data[i].surname === sname &&
@@ -72,13 +71,13 @@ export class UpdateCl {
             duplicateData = false;
             return data;
         }
-        console.log(this);
         return UpdateCl.prototype._updateChecker(text,idName,counter);
         
     }
 
     _UpdateSubmitEventHandler() {
         document.addEventListener('submit',function(e) {
+            e.preventDefault();
             
             if(this._updateAvailable) {
                 e.preventDefault();
@@ -95,6 +94,32 @@ export class UpdateCl {
                 }
             }
             this._updateAvailable = false;
+            // if()
+            let counter = this._counter;
+            const text = e.target.firstElementChild.value;
+            if(e.target.firstElementChild.getAttribute('id') === 'editbirthdate' && text) {
+                if(!e.target.firstElementChild.checkValidity()) {
+                    return;
+                }
+                const changeUp = UpdateCl.prototype._duplicateChecker(text,' ',this._counter,true);
+                const data = getLocalStorage();
+                if(changeUp) {
+                    data.forEach(function(dataObject,i) {
+                        if(i === +counter ) {
+                            dataObject.birthDate = text;
+                            const xdata = new Detail(dataObject);
+                            dataObject.age = xdata.ageCalc();
+                        }    
+                    })
+                }
+                storeData(data);
+                renderTable();
+            }
+            else if(e.target.firstElementChild.getAttribute('id') === 'editbirthdate' && !text) {
+                e.target.parentElement.innerHTML = '';
+                renderTable();
+            }   
+            
             
         })
     }
@@ -129,11 +154,11 @@ export class UpdateCl {
     // // select a markup for editting
     _htmlElement (className,counter,dateClick) {
         const birthDateText = `min='1950-01-01' max='2020-01-01' onkeydown='dateClick(event)' required>
-                               <div class= 'buttonSub' ><input type='submit'>submit</input></div>`
+                               <input class= 'buttonSub' type='submit' >`
         const value = className === 'birthdate' ? 'date' : 'text' ;
         const markup = 
             `
-            <form class='formname was-validated' autocomplete="off">
+            <form class='formname was-validated' autocomplete="off" novalidate>
                 
                 <input type=${value} id="edit${className}" data-no="${counter}" name="edit${className}" ${className === 'birthdate' ? birthDateText : '>'}
                 <div class="invalid-feedback" style="font-size:1.5rem">
@@ -164,6 +189,7 @@ export class UpdateCl {
                 this.dateClick = UpdateCl.prototype.dateSubmit.bind(this,this._counter);
                 e.target.insertAdjacentHTML('beforeend',markup(className,this._counter,this.dateClick));
             }
+            
         })
     }
 }
